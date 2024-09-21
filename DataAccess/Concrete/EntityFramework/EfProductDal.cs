@@ -1,4 +1,5 @@
-﻿using DataAccess.Abstract;
+﻿using Core.DataAccess.EntityFramework;
+using DataAccess.Abstract;
 using Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,55 +11,8 @@ using System.Text;
 namespace DataAccess.Concrete.EntityFramework
 {
     //NuGet
-    public class EfProductDal : IProductDal
+    public class EfProductDal : EfEntityReppositoryBase<Product, NorthWindContext>, IProductDal
     {
-        public void Add(Product entity)
-        {
-            //IDisposable pattern implementation od c# 
-            using (NorthWindContext context = new NorthWindContext())
-            {
-                var addedEntitty = context.Entry(entity);
-                addedEntitty.State = EntityState.Added;
-                context.SaveChanges();
-            }
-        }
 
-        public void Delete(Product entity)
-        {
-            using (NorthWindContext context = new NorthWindContext())
-            {
-                var deletedEntitty = context.Entry(entity);
-                deletedEntitty.State = EntityState.Deleted;
-                context.SaveChanges();
-            }
-        }
-
-        public Product Get(Expression<Func<Product, bool>> filter)
-        {
-            using (NorthWindContext context = new NorthWindContext())
-            {
-                return context.Set<Product>().SingleOrDefault(filter);
-            }
-        }
-
-        public List<Product> GetAll(Expression<Func<Product, bool>> filter = null)
-        {
-            using (NorthWindContext context = new NorthWindContext())
-            {
-                return filter == null 
-                    ? context.Set<Product>().ToList() 
-                    : context.Set<Product>().Where(filter).ToList();
-            }
-        }
-
-        public void Update(Product entity)
-        {
-            using (NorthWindContext context = new NorthWindContext())
-            {
-                var updatedEntitty = context.Entry(entity);
-                updatedEntitty.State = EntityState.Modified;
-                context.SaveChanges();
-            }
-        }
     }
 }
