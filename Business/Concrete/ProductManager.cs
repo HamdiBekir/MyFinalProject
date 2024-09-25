@@ -38,30 +38,34 @@ namespace Business.Concrete
             //iş kolları
             if (DateTime.Now.Hour == 10)
             {
-                return new ErrorDataResult();
+                return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
             }
 
-            return new SuccessDataResult<List<Product>>(_productDal.GetAll(), true, "Ürünler Listelendi");
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(), Messages.ProductListed);
         }
 
-        public List<Product> GetAllbyCategoryId(int id)
+        public IDataResult<List<Product>> GetAllbyCategoryId(int id)
         {
-            return _productDal.GetAll(p => p.CategoryId == id);
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.CategoryId == id));
+        }
+        public IDataResult<Product> GetbyId(int productId)
+        {
+            return new SuccessDataResult<Product>(_productDal.Get(p => p.ProductId == productId));
         }
 
-        public List<Product> GetAllbyUnitPrice(decimal min, decimal max)
+        public IDataResult<List<Product>> GetAllbyUnitPrice(decimal min, decimal max)
         {
-            return _productDal.GetAll(p => p.UnitPrice >= min && p.UnitPrice <= max);
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.UnitPrice >= min && p.UnitPrice <= max));
         }
 
-        public Product GetbyId(int productId)
-        {
-            return _productDal.Get(p => p.ProductId == productId);
-        }
 
-        public List<ProductDetailDto> GetProductDetails()
+        public IDataResult<List<ProductDetailDto>> GetProductDetails()
         {
-            return _productDal.GetProductDetails();
+            if (DateTime.Now.Hour == 12)
+            {
+                return new ErrorDataResult<List<ProductDetailDto>>(Messages.MaintenanceTime);
+            }
+            return new SuccessDataResult<List<ProductDetailDto>>(_productDal.GetProductDetails());
         }
     }
 }
