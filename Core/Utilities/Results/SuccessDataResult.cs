@@ -17,14 +17,14 @@ namespace Core.Utilities.Results
 
         }
         //3.Versiyon
-        public SuccessDataResult(string message):base(default,true,message) 
+        public SuccessDataResult(string message) : base(default, true, message)
         {
-            
+
         }
         //4.Versiyon
-        public SuccessDataResult():base(default,true) 
+        public SuccessDataResult() : base(default, true)
         {
-            
+
         }
     }
 }
